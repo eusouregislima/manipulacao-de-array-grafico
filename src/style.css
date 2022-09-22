@@ -1,0 +1,7 @@
+div {
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  margin-left: 250px;
+}
