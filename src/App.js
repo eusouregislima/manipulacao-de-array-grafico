@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
+import Modal from "react-modal";
 
 import { Chart } from "react-google-charts";
 import "./style.css";
 
+Modal.setAppElement("#root");
+
 export const options = {
   title: "População Masc e Fem por Estado",
-  chartArea: { width: "50%" },
+  chartArea: { width: "30%" },
   hAxis: {
     title: "População",
     minValue: 0,
@@ -23,6 +26,15 @@ export const optionsOne = {
 function App() {
   const [chartData, setChartData] = useState([]);
   const [chartDataTwo, setChartDataTwo] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  function handleOpenModal() {
+    setModalIsOpen(true);
+  }
+
+  function handleCloseModal() {
+    setModalIsOpen(false);
+  }
 
   const loadData = (data) => {
     const values = _.groupBy(data, (value) => value.manufacturer);
@@ -166,15 +178,23 @@ function App() {
 
   return (
     <>
-      <Chart
-        chartType="BarChart"
-        width="100%"
-        height="400px"
-        data={chartDataTwo}
-        options={options}
-      />
+      <div>
+        <button onClick={handleOpenModal}>Outro gráfico</button>
+        <Modal isOpen={modalIsOpen} onRequestClose={handleCloseModal}>
+          <h1>Gráfico de Barras</h1>
+          <Chart
+            chartType="Bar"
+            width="80%"
+            height="400px"
+            data={chartDataTwo}
+            options={options}
+          />
+          <button onClick={handleCloseModal}>Fechar</button>
+        </Modal>
+      </div>
       <div>
         <h1>Gráfico de pizza</h1>
+
         <Chart
           chartType="PieChart"
           data={chartData}
